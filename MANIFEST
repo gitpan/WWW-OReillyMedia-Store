@@ -1,0 +1,13 @@
+Build.PL
+Changes
+MANIFEST
+MANIFEST.SKIP
+SIGNATURE
+Makefile.PL
+README
+lib/WWW/OReillyMedia/Store.pm
+lib/WWW/OReillyMedia/Store/Book.pm
+t/00-load.t
+t/manifest.t
+t/pod.t
+META.yml
