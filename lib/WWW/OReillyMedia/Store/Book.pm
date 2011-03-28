@@ -8,11 +8,11 @@ WWW::OReillyMedia::Store::Book - Placeholder for the OReilly books.
 
 =head1 VERSION
 
-Version 0.02
+Version 0.03
 
 =cut
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 use Carp;
 use Data::Dumper;
@@ -130,7 +130,7 @@ sub as_string
         'id'          => '              Id: ',
         'description' => '     Description: ',
         'url'         => '             URL: ',
-        'price'       => '           Price: ',
+        'price'       => '           Price: $',
         'released'    => '        Released: ',
         'ebook'       => ' EBook Available: ',
         'online'      => 'Online Available: ',  

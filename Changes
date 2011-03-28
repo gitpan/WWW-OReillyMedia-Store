@@ -1,5 +1,8 @@
 Revision history for WWW-OReillyMedia-Store
 
+0.03    Mon Mar 28 11:29:54 2011
+        - Added search book functionality.
+
 0.02    Mon Mar 28 09:53:20 2011
         - Fixed Build.PL to add SIGNATURE file on build.
 

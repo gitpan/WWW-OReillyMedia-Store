@@ -8,11 +8,11 @@ WWW::OReillyMedia::Store - Interface to the OReilly Media Store.
 
 =head1 VERSION
 
-Version 0.02
+Version 0.03
 
 =cut
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 use Carp;
 use Readonly;
@@ -46,6 +46,7 @@ sub new
 Objective of this module is to provide an interface to the OReilly online media store. This is just an initial release. 
 I will be adding more functionality really soon.
 
+    use strict; use warnings;
     use WWW::OReillyMedia::Store;
 
     my $store = WWW::OReillyMedia::Store->new();
@@ -100,10 +101,10 @@ sub fetch_books
                 /(.*)\<\/td\>/;
                 $book->{released} = $1;
             }
-            elsif (/^\$\d+?\.\d+$/) 
+            elsif (/^\$\d*?\.?\d*?$/) 
             {
                 /^\$(.*)$/;
-                $book->{price} = '$'.$1;
+                $book->{price} = $1;
             }
             elsif (/^\<a href=\"(.*)\"\>.*Available as Ebook.*/)
             {
@@ -120,14 +121,78 @@ sub fetch_books
 
 =head2 search_book()
 
-Search for a book in the book store. NOT YET defined.
+Search for a book in the book store. Search can be done by it's id,  description, released year, 
+price, ebook and online availability. Each of this can be provided as key to the anonymous hash.
 
+    use strict; use warnings;
+    use WWW::OReillyMedia::Store;
+
+    my ($store, $books);
+    $store = WWW::OReillyMedia::Store->new();
+
+    # Search by ID.
+    $books = $store->search_book({id => 9780596005054});
+    print $books->[0]->as_string();
+    
+    # Search by Description.
+    $books = $store->search_book({description => '.NET Framework Essentials'});
+    print $books->[0]->as_string();    
+    
+    # Search by Released year.
+    $books = $store->search_book({released => 'Mar 2003'});
+    print $books->[0]->as_string();
+    
+    # Search by price i.e. less than or equal to $10.
+    $books = $store->search_book({price => 10});
+    print $books->[0]->as_string();
+    
+    # Search by ebook i.e. return all ebooks.
+    $books = $store->search_book({ebook => 1});
+    print $books->[0]->as_string();
+
+    # Search by online i.e. return all online books.
+    $books = $store->search_book({online => 1});
+    print $books->[0]->as_string();
+    
 =cut
 
 sub search_book
 {
     my $self  = shift;
-    my $query = shift;
+    my $param = shift;
+    
+    my $books;
+    foreach ( @{$self->{books}} )
+    {
+        if (exists($param->{id}) && defined($param->{id}) && ($param->{id} =~ /^\d+$/))
+        {
+            return [$_] if ($_->get_id() == $param->{id});
+        }
+        elsif (exists($param->{description}) && defined($param->{description}))
+        {
+            push @{$books}, $_
+                if ($_->get_description() =~ /$param->{description}/i);
+        }
+        elsif (exists($param->{released}) && defined($param->{released}))
+        {
+            push @{$books}, $_
+                if ($_->get_released() =~ /$param->{released}/i);
+        }
+        if (exists($param->{price}) && defined($param->{price}) && ($param->{price} =~ /^\d*\.?\d*?$/))
+        {
+            push @{$books}, $_
+                if ($_->get_price() <= $param->{price});
+        }
+        elsif (exists($param->{ebook}) && defined($param->{ebook}))
+        {
+            push @{$books}, $_  if $_->is_ebook_available();
+        }
+        elsif (exists($param->{online}) && defined($param->{online}))
+        {
+            push @{$books}, $_  if $_->is_available_online();
+        }
+    }
+    return $books;
 }
 
 =head2 book_count()
