@@ -11,3 +11,4 @@ t/00-load.t
 t/manifest.t
 t/pod.t
 META.yml
+SIGNATURE    Added here by Module::Build
