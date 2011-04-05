@@ -2,17 +2,19 @@ package WWW::OReillyMedia::Store;
 
 use strict; use warnings;
 
+use overload q("") => \&as_string, fallback => 1;
+
 =head1 NAME
 
 WWW::OReillyMedia::Store - Interface to the OReilly Media Store.
 
 =head1 VERSION
 
-Version 0.03
+Version 0.04
 
 =cut
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 use Carp;
 use Readonly;
@@ -231,6 +233,31 @@ sub get_all_books
 {
     my $self = shift;
     return $self->{books};
+}
+
+=head2 as_string()
+
+Return all books in human readable format.
+
+    use strict; use warnings;
+    use WWW::OReillyMedia::Store;
+
+    my $store = WWW::OReillyMedia::Store->new();
+    # Be warned, it is a bit slow and most likely to bring back quite a lot of output.
+    print $store;
+
+=cut
+
+sub as_string
+{
+    my $self   = shift;
+    my $string = '';
+    foreach (@{$self->{books}})
+    {
+        $string .= $_;
+        $string .= "----------------------------------------\n";
+    }
+    return $string;
 }
 
 =head1 AUTHOR

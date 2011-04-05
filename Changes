@@ -1,5 +1,9 @@
 Revision history for WWW-OReillyMedia-Store
 
+0.04    Tue Apr 05 17:01:19 2011
+        - Added method as_string to the module WWW::OReillyMedia::Store.
+        - Made method as_string() as overiride method in scalar context.
+
 0.03    Mon Mar 28 11:29:54 2011
         - Added search book functionality.
 
