@@ -10,11 +10,11 @@ WWW::OReillyMedia::Store - Interface to the OReilly Media Store.
 
 =head1 VERSION
 
-Version 0.04
+Version 0.05
 
 =cut
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 use Carp;
 use Readonly;
@@ -43,26 +43,16 @@ sub new
     return $self;
 }
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
-Objective of this module is to provide an interface to the OReilly online media store. This is just an initial release. 
-I will be adding more functionality really soon.
-
-    use strict; use warnings;
-    use WWW::OReillyMedia::Store;
-
-    my $store = WWW::OReillyMedia::Store->new();
-    my $books = $store->get_all_books();
-
-    print $books->[0]->as_string();
-    print "Total Count: [" . $store->book_count() . "]\n"
+Objective of this module is to provide an interface to the OReilly online media store. 
 
 =head1 METHODS
 
 =head2 fetch_books()
 
-Fetches books details from OReilly online store realtime. It does so as part of constructor
-functionality. You DONT really need to do call this explicitly. However it is still there for
+Fetches  books  details  from OReilly online store realtime. It does so as part of constructor
+functionality.  You DONT really need to do call this explicitly. However it is still there for
 you to play with it.
 
 =cut
@@ -123,8 +113,9 @@ sub fetch_books
 
 =head2 search_book()
 
-Search for a book in the book store. Search can be done by it's id,  description, released year, 
-price, ebook and online availability. Each of this can be provided as key to the anonymous hash.
+Search for  a  book  in  the book store. Search  can be done by it's id, description, released
+year,price,ebook and online availability. Each of this can be provided as key to the anonymous
+hash.
 
     use strict; use warnings;
     use WWW::OReillyMedia::Store;
@@ -217,8 +208,8 @@ sub book_count
 
 =head2 get_all_books()
 
-Returns all the books that have been fetched from the OReilly online store. It returs a reference 
-to the list of objects of class WWW::OReillyMedia::Store::Book.
+Returns all the books that have been fetched from the OReilly online store.  Data  would be in
+the form of list of objects of class WWW::OReillyMedia::Store::Book.
 
     use strict; use warnings;
     use WWW::OReillyMedia::Store;
@@ -266,9 +257,10 @@ Mohammad S Anwar, C<< <mohammad.anwar at yahoo.com> >>
 
 =head1 BUGS
 
-Please report any bugs or feature requests to C<bug-www-oreillymedia-store at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=WWW-OReillyMedia-Store>.  
-I will be notified, and then you'll automatically be notified of progress on your bug as I make changes.
+Please report any bugs or feature requests to C<bug-www-oreillymedia-store at rt.cpan.org>, or
+through the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=WWW-OReillyMedia-Store>.  
+I will be notified and then you'll automatically be notified of progress on your bug as I make
+changes.
 
 =head1 SUPPORT
 
@@ -302,15 +294,16 @@ L<http://search.cpan.org/dist/WWW-OReillyMedia-Store/>
 
 Copyright 2011 Mohammad S Anwar.
 
-This program is free software; you can redistribute it and/or modify it
-under the terms of either: the GNU General Public License as published
-by the Free Software Foundation; or the Artistic License.
+This  program  is  free  software; you can redistribute it and/or modify it under the terms of
+either:  the  GNU  General Public License as published by the Free Software Foundation; or the
+Artistic License.
 
 See http://dev.perl.org/licenses/ for more information.
 
 =head1 DISCLAIMER
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+This  program  is  distributed  in  the hope that it will be useful, but WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 =cut
 

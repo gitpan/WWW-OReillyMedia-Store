@@ -10,11 +10,11 @@ WWW::OReillyMedia::Store::Book - Placeholder for the OReilly books.
 
 =head1 VERSION
 
-Version 0.04
+Version 0.05
 
 =cut
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 use Carp;
 use Data::Dumper;
@@ -157,9 +157,10 @@ Mohammad S Anwar, C<< <mohammad.anwar at yahoo.com> >>
 
 =head1 BUGS
 
-Please report any bugs or feature requests to C<bug-www-oreillymedia-store at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=WWW-OReillyMedia-Store>.  
-I will be notified, and then you'll automatically be notified of progress on your bug as I make changes.
+Please report any bugs or feature requests to C<bug-www-oreillymedia-store at rt.cpan.org>  or
+through the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=WWW-OReillyMedia-Store>.  
+I will be notified,  and  then you will automatically be notified of progress on your bug as I
+make changes.
 
 =head1 SUPPORT
 
@@ -193,15 +194,17 @@ L<http://search.cpan.org/dist/WWW-OReillyMedia-Store/>
 
 Copyright 2011 Mohammad S Anwar.
 
-This program is free software; you can redistribute it and/or modify it
-under the terms of either: the GNU General Public License as published
-by the Free Software Foundation; or the Artistic License.
+This  program  is  free  software; you can redistribute it and/or modify it under the terms of
+either:  the  GNU  General Public License as published by the Free Software Foundation; or the
+Artistic License.
 
 See http://dev.perl.org/licenses/ for more information.
 
 =head1 DISCLAIMER
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+This  program  is  distributed  in  the hope that it will be useful, but WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
 
 =cut
 
