@@ -1,5 +1,9 @@
 Revision history for WWW-OReillyMedia-Store
 
+0.06    Mon Aug 08 13:18:11 2011
+        - Made Readonly v1.03 as minimum requirement.
+        - Prepared the distribution using the Module::Signature v0.68.
+
 0.05    Thu Apr 21 19:06:00 2011
         - Renamed title "SYNOPSIS" to "DESCRIPTION".
         - Minor cosmetics changes.

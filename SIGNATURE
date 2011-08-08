@@ -1,5 +1,5 @@
 This file contains message digests of all files listed in MANIFEST,
-signed via the Module::Signature module, version 0.66.
+signed via the Module::Signature module, version 0.68.
 
 To verify the content in this distribution, first make sure you have
 Module::Signature installed, then type:
@@ -14,26 +14,26 @@ not run its Makefile.PL or Build.PL.
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-SHA1 6add0f2f77ec21d99c247fd5abed810294e51e39 Build.PL
-SHA1 af442c6a709c11bcdd02850c86c2436527575aa2 Changes
+SHA1 1ee4e8019a3b6defa4b3579eebf4abeb59fda7d5 Build.PL
+SHA1 d1204cf809d70d88637d902ac4a13f8d549ef0ad Changes
 SHA1 6c2772768d926b15848f75c4fdf46d3fcab18c0e MANIFEST
 SHA1 7d20e4e840781030202bb045d5ab81b3fd1b68b0 MANIFEST.SKIP
-SHA1 779024f75dc32e8e55fd1b66efc34f8f65d54a4f META.yml
-SHA1 e14f6903a129480b51a869cdcc4f0ea8dd09943a Makefile.PL
+SHA1 5d57cd3cd6b16a2ef233fa94cfdfde85ddbfaf31 META.yml
+SHA1 aee46585dcdb30c22af8a939cd1a0d574cca8257 Makefile.PL
 SHA1 a00c9af8c7aae5fb5fdbd465f0fcd683afacfd07 README
-SHA1 1888adfbf173b2a31de0da24f3b4ea843904c5be lib/WWW/OReillyMedia/Store.pm
-SHA1 2badcfea9b962d548b80b51b80712cefbafd5147 lib/WWW/OReillyMedia/Store/Book.pm
+SHA1 555c279b171fe356481e4348aeaa3f01ee75d06c lib/WWW/OReillyMedia/Store.pm
+SHA1 cfa8649dd0b00d813ba22f3c396860831d0488c4 lib/WWW/OReillyMedia/Store/Book.pm
 SHA1 e90de997eaeeb988b872b43f932a728522128921 t/00-load.t
 SHA1 2b8ffb7e4f399af95d092743846ac8d438f2c53e t/manifest.t
 SHA1 0765c9ff0cc4319f415bb08d0053b7717a8284a2 t/pod.t
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.14 (MingW32)
 
-iQEcBAEBAgAGBQJNsHKGAAoJEPYcXBXhRYOhG8MH/RZHjqgHOfESvsKVvbslkJKB
-CLjpzhHYgFxb/sEmM+1Mwx3mriE4N9XKeQyTk1Qtb0PLyJJBy97uYs2QdCK8E4Q4
-9PrHm8JOKsGyTXi1gfuiER2B1wqqjZWmS0VIOG4O5VGh10OnI5rpTWhbCxLtnxnz
-2G1cd1lP0f7Ff4gnrIUXw3wdY6zoU43OdjDh2POPz2JCDh8IRQ+g++9krJp0IKCn
-qzwZsq0ETF7HYUQhwuFDoXm8dpq8DrE4cmMI7AP6a984T9zqxuz3rR0rLNKkyxZF
-CySNtedvmP/0eBqg7/9VqJDRTxVIck+ccfffmgHaPuYocIcaE9Fyar5D0zTqdDo=
-=Oc4+
+iQEcBAEBAgAGBQJOP9QxAAoJEPYcXBXhRYOh83QIAI1mJLjLeGgrgTRjgZb4yUWk
+QEQYxTzS4y3a88VoenFMladHV5aojywxCPb+ASOnOgyutyL9wH+45KlYNYBGzC97
+b8QiwMieennEIaykjUV36K3HDqVCC2tr3zHKDCz92sPOd3NYkAD2kwj79BnBtDRr
+h3zTIjvjRw1Ve0aD2RgKiT3N+8b/FT5SICzx/g54HEp5YRtJv9dPjTq+S9KcqxkI
+dAoxgShwBqncAdsjs8X5yR/kL2U+7NMR1ea7VzXIq0ImBrlu0kvaGiIX+dME16cF
+OcS17rvwz3YffpxCRUqITupP2XzCOhyxousJoY7vwHEVVe88mg5HpU3IZ5KQAGM=
+=o1Uu
 -----END PGP SIGNATURE-----

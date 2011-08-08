@@ -10,11 +10,11 @@ WWW::OReillyMedia::Store::Book - Placeholder for the OReilly books.
 
 =head1 VERSION
 
-Version 0.05
+Version 0.06
 
 =cut
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 use Carp;
 use Data::Dumper;

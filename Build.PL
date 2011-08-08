@@ -10,7 +10,7 @@ my $builder = Module::Build->new(
     add_to_cleanup    => [ 'WWW-OReillyMedia-Store-*' ],    
     build_requires    => {
         'Test::More'     => 0,
-        'Readonly'       => 0,
+        'Readonly'       => '1.03',
         'HTTP::Request'  => '1.40',
         'LWP::UserAgent' => '2.33',
     },
