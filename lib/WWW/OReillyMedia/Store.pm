@@ -1,8 +1,6 @@
 package WWW::OReillyMedia::Store;
 
-use strict; use warnings;
-
-use overload q("") => \&as_string, fallback => 1;
+$WWW::OReillyMedia::Store::VERSION = '0.07';
 
 =head1 NAME
 
@@ -10,257 +8,98 @@ WWW::OReillyMedia::Store - Interface to the OReilly Media Store.
 
 =head1 VERSION
 
-Version 0.06
+Version 0.07
 
 =cut
 
-our $VERSION = '0.06';
-
-use Carp;
-use Readonly;
+use 5.006;
 use Data::Dumper;
-use HTTP::Request;
-use LWP::UserAgent;
+
+use XML::Simple;
+use LWP::Simple;
 use WWW::OReillyMedia::Store::Book;
 
-Readonly my $URL =>
-[
-    'http://oreilly.com/store/complete.html',
-    'http://oreilly.com/store/complete2.html',
-    'http://oreilly.com/store/complete3.html',
-    'http://oreilly.com/store/complete4.html'
-];
+use Moo;
+use namespace::clean;
 
-sub new
-{
-    my $class = shift;
-    my $self  = { books   => undef,
-                  browser => LWP::UserAgent->new()
-                };
-    
-    bless $self, $class;
-    $self->fetch_books();
-    return $self;
-}
+my $NEW_BOOKS      = "http://feeds.feedburner.com/oreilly/newbooks?format=xml";
+my $UPCOMING_BOOKS = "http://feeds.feedburner.com/oreilly/upcomingbooks?format=xml";
 
-=head1 DESCRIPTION
+has 'new_books_url'      => (is => 'ro', default => sub { return $NEW_BOOKS;      });
+has 'upcoming_books_url' => (is => 'ro', default => sub { return $UPCOMING_BOOKS; });
 
-Objective of this module is to provide an interface to the OReilly online media store. 
+=head1 SYNOPSIS
+
+Objective of this module is to provide an interface to  the  OReilly online media
+store. This rely on the RSS feed made public by OReilly.
+
+    use strict; use warnings;
+    use WWW::OReillyMedia::Store;
+
+    my $store = WWW::OReillyMedia::Store->new;
+
+    my $new_books      = $store->new_books;
+    my $upcoming_books = $store->upcoming_books;
+
+    print $new_books->[0]->as_string();
+    print $upcoming_books->[0]->as_string();
 
 =head1 METHODS
 
-=head2 fetch_books()
+=head2 new_books()
 
-Fetches  books  details  from OReilly online store realtime. It does so as part of constructor
-functionality.  You DONT really need to do call this explicitly. However it is still there for
-you to play with it.
+Fetches  new books details from OReilly online store realtime. It returns the ref
+to a list of objects of type L<WWW::OReillMedia::Store::Book>.
 
 =cut
 
-sub fetch_books
-{
-    my $self    = shift;
-    my $browser = $self->{browser};
-    
-    my ($books, $book);
-    my ($request, $response, $contents);
-        
-    foreach (@{$URL})
-    {
-        $request  = HTTP::Request->new(GET=>$_);
-        $response = $browser->request($request);
-        croak("ERROR: Couldn't connect to search.cpan.org.\n") 
-            unless $response->is_success;
-    
-        $contents = $response->content;
-        foreach (split(/\n/,$contents))
-        {
-            chomp;
-            s/^\s+//g;
-            s/\s+$//g;
-            next if /^$/;
-            
-            if (/\<a class\=\"tt\" id=\"(.*)\" href=\"(.*)\"\>(.*)/)
-            {
-                push @$books, WWW::OReillyMedia::Store::Book->new($book) if defined $book;
-                $book = undef;
-                $book->{id}   = $1;
-                $book->{url}  = $2;
-                $book->{desc} = $3;
-            }
-            elsif (/^[A-Z][a-z][a-z]\s\d{4}\<\/td\>$/) 
-            {
-                /(.*)\<\/td\>/;
-                $book->{released} = $1;
-            }
-            elsif (/^\$\d*?\.?\d*?$/) 
-            {
-                /^\$(.*)$/;
-                $book->{price} = $1;
-            }
-            elsif (/^\<a href=\"(.*)\"\>.*Available as Ebook.*/)
-            {
-                $book->{ebook} = 1;
-            }
-            elsif (/^\<a href=\"(.*)\"\>.*Read it on online with Safari.*/)
-            {
-                $book->{online} = $1;
-            }
-        }
-    }
-    $self->{books} = $books;
+sub new_books {
+    my ($self) = @_;
+
+    return $self->_fetch($self->new_books_url);
 }
 
-=head2 search_book()
+=head2 upcoming_books()
 
-Search for  a  book  in  the book store. Search  can be done by it's id, description, released
-year,price,ebook and online availability. Each of this can be provided as key to the anonymous
-hash.
+Fetches upcoming books details from OReilly online store realtime. It returns the
+ref to a list of objects of type L<WWW::OReillMedia::Store::Book>.
 
-    use strict; use warnings;
-    use WWW::OReillyMedia::Store;
-
-    my ($store, $books);
-    $store = WWW::OReillyMedia::Store->new();
-
-    # Search by ID.
-    $books = $store->search_book({id => 9780596005054});
-    print $books->[0]->as_string();
-    
-    # Search by Description.
-    $books = $store->search_book({description => '.NET Framework Essentials'});
-    print $books->[0]->as_string();    
-    
-    # Search by Released year.
-    $books = $store->search_book({released => 'Mar 2003'});
-    print $books->[0]->as_string();
-    
-    # Search by price i.e. less than or equal to $10.
-    $books = $store->search_book({price => 10});
-    print $books->[0]->as_string();
-    
-    # Search by ebook i.e. return all ebooks.
-    $books = $store->search_book({ebook => 1});
-    print $books->[0]->as_string();
-
-    # Search by online i.e. return all online books.
-    $books = $store->search_book({online => 1});
-    print $books->[0]->as_string();
-    
 =cut
 
-sub search_book
-{
-    my $self  = shift;
-    my $param = shift;
-    
-    my $books;
-    foreach ( @{$self->{books}} )
-    {
-        if (exists($param->{id}) && defined($param->{id}) && ($param->{id} =~ /^\d+$/))
-        {
-            return [$_] if ($_->get_id() == $param->{id});
-        }
-        elsif (exists($param->{description}) && defined($param->{description}))
-        {
-            push @{$books}, $_
-                if ($_->get_description() =~ /$param->{description}/i);
-        }
-        elsif (exists($param->{released}) && defined($param->{released}))
-        {
-            push @{$books}, $_
-                if ($_->get_released() =~ /$param->{released}/i);
-        }
-        if (exists($param->{price}) && defined($param->{price}) && ($param->{price} =~ /^\d*\.?\d*?$/))
-        {
-            push @{$books}, $_
-                if ($_->get_price() <= $param->{price});
-        }
-        elsif (exists($param->{ebook}) && defined($param->{ebook}))
-        {
-            push @{$books}, $_  if $_->is_ebook_available();
-        }
-        elsif (exists($param->{online}) && defined($param->{online}))
-        {
-            push @{$books}, $_  if $_->is_available_online();
-        }
+sub upcoming_books {
+    my ($self) = @_;
+
+    return $self->_fetch($self->upcoming_books_url);
+}
+
+sub _fetch {
+    my ($url) = @_;
+
+    my $books = [];
+    my $xml   = get($url);
+    my $feeds = XMLin($xml);
+    foreach my $catalog (keys %{$feeds->{entry}}) {
+        my $title = $feeds->{entry}->{$catalog}->{title};
+        push @$books, WWW::OReillMedia::Store::Book->new({ title => $title, catalog => $catalog });
     }
+
     return $books;
-}
-
-=head2 book_count()
-
-Returns the total books count in the OReilly online store.
-
-    use strict; use warnings;
-    use WWW::OReillyMedia::Store;
-
-    my $store = WWW::OReillyMedia::Store->new();
-    print "Count: [" . $store->book_count() . "]\n"
-
-=cut
-
-sub book_count
-{
-    my $self = shift;
-    return scalar(@{$self->{books}});
-}
-
-=head2 get_all_books()
-
-Returns all the books that have been fetched from the OReilly online store.  Data  would be in
-the form of list of objects of class WWW::OReillyMedia::Store::Book.
-
-    use strict; use warnings;
-    use WWW::OReillyMedia::Store;
-
-    my $store = WWW::OReillyMedia::Store->new();
-    my $books = $store->get_all_books();
-    print $books->[0]->as_string();
-
-=cut
-
-sub get_all_books
-{
-    my $self = shift;
-    return $self->{books};
-}
-
-=head2 as_string()
-
-Return all books in human readable format.
-
-    use strict; use warnings;
-    use WWW::OReillyMedia::Store;
-
-    my $store = WWW::OReillyMedia::Store->new();
-    # Be warned, it is a bit slow and most likely to bring back quite a lot of output.
-    print $store;
-
-=cut
-
-sub as_string
-{
-    my $self   = shift;
-    my $string = '';
-    foreach (@{$self->{books}})
-    {
-        $string .= $_;
-        $string .= "----------------------------------------\n";
-    }
-    return $string;
 }
 
 =head1 AUTHOR
 
 Mohammad S Anwar, C<< <mohammad.anwar at yahoo.com> >>
 
+=head1 REPOSITORY
+
+L<https://github.com/Manwar/WWW-OReillyMedia-Store>
+
 =head1 BUGS
 
-Please report any bugs or feature requests to C<bug-www-oreillymedia-store at rt.cpan.org>, or
-through the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=WWW-OReillyMedia-Store>.  
-I will be notified and then you'll automatically be notified of progress on your bug as I make
-changes.
+Please  report  any  bugs  or feature requests to C<bug-www-oreillymedia-store at
+rt.cpan.org>, or through the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=WWW-OReillyMedia-Store>.
+I will be notified, and then you'll automatically be notified of progress on your
+bug as I make changes.
 
 =head1 SUPPORT
 
@@ -292,18 +131,41 @@ L<http://search.cpan.org/dist/WWW-OReillyMedia-Store/>
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright 2011 Mohammad S Anwar.
+Copyright (C) 2011 - 2014 Mohammad S Anwar.
 
-This  program  is  free  software; you can redistribute it and/or modify it under the terms of
-either:  the  GNU  General Public License as published by the Free Software Foundation; or the
-Artistic License.
+This  program  is  free software; you can redistribute it and/or modify it under
+the  terms  of the the Artistic License (2.0). You may obtain a copy of the full
+license at:
 
-See http://dev.perl.org/licenses/ for more information.
+L<http://www.perlfoundation.org/artistic_license_2_0>
 
-=head1 DISCLAIMER
+Any  use,  modification, and distribution of the Standard or Modified Versions is
+governed by this Artistic License.By using, modifying or distributing the Package,
+you accept this license. Do not use, modify, or distribute the Package, if you do
+not accept this license.
 
-This  program  is  distributed  in  the hope that it will be useful, but WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+If your Modified Version has been derived from a Modified Version made by someone
+other than you,you are nevertheless required to ensure that your Modified Version
+ complies with the requirements of this license.
+
+This  license  does  not grant you the right to use any trademark,  service mark,
+tradename, or logo of the Copyright Holder.
+
+This license includes the non-exclusive, worldwide, free-of-charge patent license
+to make,  have made, use,  offer to sell, sell, import and otherwise transfer the
+Package with respect to any patent claims licensable by the Copyright Holder that
+are  necessarily  infringed  by  the  Package. If you institute patent litigation
+(including  a  cross-claim  or  counterclaim) against any party alleging that the
+Package constitutes direct or contributory patent infringement,then this Artistic
+License to you shall terminate on the date that such litigation is filed.
+
+Disclaimer  of  Warranty:  THE  PACKAGE  IS  PROVIDED BY THE COPYRIGHT HOLDER AND
+CONTRIBUTORS  "AS IS'  AND WITHOUT ANY EXPRESS OR IMPLIED WARRANTIES. THE IMPLIED
+WARRANTIES    OF   MERCHANTABILITY,   FITNESS   FOR   A   PARTICULAR  PURPOSE, OR
+NON-INFRINGEMENT ARE DISCLAIMED TO THE EXTENT PERMITTED BY YOUR LOCAL LAW. UNLESS
+REQUIRED BY LAW, NO COPYRIGHT HOLDER OR CONTRIBUTOR WILL BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL,  OR CONSEQUENTIAL DAMAGES ARISING IN ANY WAY OUT OF THE USE
+OF THE PACKAGE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 =cut
 

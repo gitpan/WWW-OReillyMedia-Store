@@ -1,22 +1,30 @@
 Revision history for WWW-OReillyMedia-Store
 
-0.06    Mon Aug 08 13:18:11 2011
-        - Made Readonly v1.03 as minimum requirement.
-        - Prepared the distribution using the Module::Signature v0.68.
+0.07  Sat Sep 13 14:11:29 2014
+      - Restructured the code base using 'Moo'.
+      - Results now based in the RSS feed rather than trawling OReilly website.
+      - Deleted Build.PL file.
+      - Removed dependency of Readonly.pm and Carp.pm.
+      - Added section "REPOSITORY" to the pod
+      - Added key "META_MERGE" to Makefile.PL
 
-0.05    Thu Apr 21 19:06:00 2011
-        - Renamed title "SYNOPSIS" to "DESCRIPTION".
-        - Minor cosmetics changes.
+0.06  Mon Aug 08 13:18:11 2011
+      - Made Readonly v1.03 as minimum requirement.
+      - Prepared the distribution using the Module::Signature v0.68.
 
-0.04    Tue Apr 05 17:01:19 2011
-        - Added method as_string to the module WWW::OReillyMedia::Store.
-        - Made method as_string() as overiride method in scalar context.
+0.05  Thu Apr 21 19:06:00 2011
+      - Renamed title "SYNOPSIS" to "DESCRIPTION".
+      - Minor cosmetics changes.
 
-0.03    Mon Mar 28 11:29:54 2011
-        - Added search book functionality.
+0.04  Tue Apr 05 17:01:19 2011
+      - Added method as_string to the module WWW::OReillyMedia::Store.
+      - Made method as_string() as overiride method in scalar context.
 
-0.02    Mon Mar 28 09:53:20 2011
-        - Fixed Build.PL to add SIGNATURE file on build.
+0.03  Mon Mar 28 11:29:54 2011
+      - Added search book functionality.
 
-0.01    Fri Mar 25 16:12:13 2011
-        - First version released.
+0.02  Mon Mar 28 09:53:20 2011
+      - Fixed Build.PL to add SIGNATURE file on build.
+
+0.01  Fri Mar 25 16:12:13 2011
+      - First version released.
