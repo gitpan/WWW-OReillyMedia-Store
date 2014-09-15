@@ -1,6 +1,6 @@
 package WWW::OReillyMedia::Store;
 
-$WWW::OReillyMedia::Store::VERSION = '0.07';
+$WWW::OReillyMedia::Store::VERSION = '0.08';
 
 =head1 NAME
 
@@ -8,7 +8,7 @@ WWW::OReillyMedia::Store - Interface to the OReilly Media Store.
 
 =head1 VERSION
 
-Version 0.07
+Version 0.08
 
 =cut
 
