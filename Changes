@@ -1,5 +1,10 @@
 Revision history for WWW-OReillyMedia-Store
 
+0.09  Sun Sep 21 02:30:29 2014
+      - Updated method new_books() and upcoming_books() to call the method _fetch correctly.
+      - Fixed the typo in th method _fetch().
+      - Minor changes to the pod document.
+
 0.08  Tue Sep 16 00:48:15 2014
       - Minor cosmetic changes to README file.
 

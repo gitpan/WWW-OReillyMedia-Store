@@ -1,6 +1,6 @@
 package WWW::OReillyMedia::Store;
 
-$WWW::OReillyMedia::Store::VERSION = '0.08';
+$WWW::OReillyMedia::Store::VERSION = '0.09';
 
 =head1 NAME
 
@@ -8,7 +8,7 @@ WWW::OReillyMedia::Store - Interface to the OReilly Media Store.
 
 =head1 VERSION
 
-Version 0.08
+Version 0.09
 
 =cut
 
@@ -41,8 +41,8 @@ store. This rely on the RSS feed made public by OReilly.
     my $new_books      = $store->new_books;
     my $upcoming_books = $store->upcoming_books;
 
-    print $new_books->[0]->as_string();
-    print $upcoming_books->[0]->as_string();
+    print $new_books->[0]->as_string(), "\n";
+    print $upcoming_books->[0]->as_string(), "\n";
 
 =head1 METHODS
 
@@ -56,20 +56,20 @@ to a list of objects of type L<WWW::OReillMedia::Store::Book>.
 sub new_books {
     my ($self) = @_;
 
-    return $self->_fetch($self->new_books_url);
+    return _fetch($self->new_books_url);
 }
 
 =head2 upcoming_books()
 
 Fetches upcoming books details from OReilly online store realtime. It returns the
-ref to a list of objects of type L<WWW::OReillMedia::Store::Book>.
+ref to a list of objects of type L<WWW::OReillyMedia::Store::Book>.
 
 =cut
 
 sub upcoming_books {
     my ($self) = @_;
 
-    return $self->_fetch($self->upcoming_books_url);
+    return _fetch($self->upcoming_books_url);
 }
 
 sub _fetch {
@@ -80,7 +80,7 @@ sub _fetch {
     my $feeds = XMLin($xml);
     foreach my $catalog (keys %{$feeds->{entry}}) {
         my $title = $feeds->{entry}->{$catalog}->{title};
-        push @$books, WWW::OReillMedia::Store::Book->new({ title => $title, catalog => $catalog });
+        push @$books, WWW::OReillyMedia::Store::Book->new({ title => $title, catalog => $catalog });
     }
 
     return $books;

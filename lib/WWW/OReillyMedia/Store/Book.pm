@@ -1,6 +1,6 @@
 package WWW::OReillyMedia::Store::Book;
 
-$WWW::OReillyMedia::Store::Book::VERSION = '0.08';
+$WWW::OReillyMedia::Store::Book::VERSION = '0.09';
 
 =head1 NAME
 
@@ -8,7 +8,7 @@ WWW::OReillyMedia::Store::Book - Placeholder for the OReilly books.
 
 =head1 VERSION
 
-Version 0.08
+Version 0.09
 
 =cut
 
